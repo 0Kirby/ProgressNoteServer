@@ -15,7 +15,7 @@ import org.json.JSONObject;
  * Servlet implementation class RegisterServlet
  */
 @WebServlet("/RegisterServlet")
-public class RegisterServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {// 注册servlet
 	private static final long serialVersionUID = 1L;
 	static User user;
 
@@ -36,32 +36,31 @@ public class RegisterServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html;charset=utf-8");// 设置转码格式
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 
 		try (PrintWriter out = response.getWriter()) {
-			String username = request.getParameter("username").trim();
-			String password = request.getParameter("password").trim();
+			String username = request.getParameter("username").trim();// 获取用户名
+			String password = request.getParameter("password").trim();// 获取密码
 
-			JSONObject jsonObject = new JSONObject();
+			JSONObject jsonObject = new JSONObject();// 创建JSON对象
 
-			if (isExist(username)) {
+			if (isExist(username))
 				jsonObject.put("Result", "用户已存在！");
-			} else {
+			else {
 				UserDAO.registerUser(username, password);
 				jsonObject.put("Result", "注册成功！");
 			}
-			out.write(jsonObject.toString());
+			out.write(jsonObject.toString());// 输出JSON字符串
 		}
 	}
 
-	private Boolean isExist(String username) {
+	private Boolean isExist(String username) {// 查询用户是否存在
 		user = UserDAO.queryUser(username);
-		if (user == null) {
+		if (user == null)
 			return false;
-		} else {
+		else
 			return true;
-		}
 	}
 }

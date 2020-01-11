@@ -9,7 +9,7 @@
 <body>
 
 	<form name="user" method="post">
-		<p>用户名：<input name="username" type="text">
+		<p>用户名：<input name="username" type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');">
 		<p><p>密&emsp;码：<input name="password" type="password">
 		</p><p>
 			<input type="submit" value="登录" onClick="login()" />&nbsp;&nbsp;<input

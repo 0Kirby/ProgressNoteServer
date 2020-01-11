@@ -6,14 +6,12 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
-public class DatabaseManager extends HttpServlet {
+public class DatabaseManager extends HttpServlet {//负责与数据库的连接
 	private static final long serialVersionUID = 1L;
 	ServletConfig config;
 	private static String db_url = "jdbc:mysql://请您在这里输入服务器的地址:3306/progress_note?autoReconnect=true&serverTimezone=CST";
@@ -24,7 +22,7 @@ public class DatabaseManager extends HttpServlet {
 	private static boolean flag = false;
 
 	@Override
-	public void init(ServletConfig config) throws ServletException {
+	public void init(ServletConfig config) throws ServletException {//初始化
 		// TODO Auto-generated method stub
 		super.init(config);
 		this.config = config;
@@ -41,19 +39,19 @@ public class DatabaseManager extends HttpServlet {
 		}
 	}
 	
-	public static Connection getConnection() {
+	public static Connection getConnection() {//与数据库建立连接
 		decrypt();
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-			connection = DriverManager.getConnection(db_url, db_username, db_password);
+			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();//数据库驱动类
+			connection = DriverManager.getConnection(db_url, db_username, db_password);//传参建立连接
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException
 				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
-			Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+			ex.printStackTrace();
 		}
 		return connection;
 	}
 
-	public static void closeAll(Connection connection, Statement statement, ResultSet resultSet) {
+	public static void closeAll(Connection connection, Statement statement, ResultSet resultSet) {//关闭连接
 		try {
 			if (resultSet != null)
 				resultSet.close();
@@ -62,18 +60,7 @@ public class DatabaseManager extends HttpServlet {
 			if (connection != null)
 				connection.close();
 		} catch (SQLException ex) {
-			Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
-		}
-	}
-
-	public static void closeAll(Connection connection, Statement statement) {
-		try {
-			if (statement != null)
-				statement.close();
-			if (connection != null)
-				connection.close();
-		} catch (SQLException ex) {
-			Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+			ex.printStackTrace();
 		}
 	}
 }
