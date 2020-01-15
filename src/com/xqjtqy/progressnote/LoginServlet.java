@@ -38,9 +38,10 @@ public class LoginServlet extends HttpServlet {// 登录servlet
 
 			JSONObject jsonObject = new JSONObject();// 创建JSON对象
 
-			if (verifyResult == 1)
+			if (verifyResult == 1) {
 				jsonObject.put("Result", "登录成功！");
-			else if (verifyResult == 0)
+				jsonObject.put("Id", user.getId());
+			} else if (verifyResult == 0)
 				jsonObject.put("Result", "用户名或密码错误！");
 			else if (verifyResult == -1)
 				jsonObject.put("Result", "该用户已被停用！");

@@ -49,8 +49,9 @@ public class RegisterServlet extends HttpServlet {// 注册servlet
 			if (isExist(username))
 				jsonObject.put("Result", "用户已存在！");
 			else {
-				UserDAO.registerUser(username, password);
+				int id = UserDAO.registerUser(username, password);
 				jsonObject.put("Result", "注册成功！");
+				jsonObject.put("Id", id);
 			}
 			out.write(jsonObject.toString());// 输出JSON字符串
 		}
