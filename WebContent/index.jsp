@@ -11,6 +11,11 @@
 	<form name="user" method="post">
 		<p>用户名：<input name="username" type="text" onkeyup="this.value=this.value.replace(/[^\w_]/g,'');">
 		<p><p>密&emsp;码：<input name="password" type="password">
+		<p><input type="hidden" name="language" value="aaa">
+		<input type="hidden" name="version" value="aaa">
+		<input type="hidden" name="display" value="aaa">
+		<input type="hidden" name="model" value="aaa">
+		<input type="hidden" name="brand" value="aaa"><p>
 		</p><p>
 			<input type="submit" value="登录" onClick="login()" />&nbsp;&nbsp;<input
 				type="submit" value="注册" onClick="register()">

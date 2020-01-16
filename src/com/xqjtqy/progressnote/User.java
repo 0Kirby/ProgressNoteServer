@@ -5,7 +5,26 @@ public class User {
 	private int id;// id
 	private String username;// 用户名
 	private String password;// 密码
+	private String language;// 语言
+	private String version;// 版本
+	private String display;// 显示信息
+	private String model;// 型号
+	private String brand;// 品牌
+	
 	boolean isValid;// 账号是否有效
+
+	public User(int id, String username, String password, String language, String version, String display, String model,
+			String brand, boolean isValid) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.language = language;
+		this.version = version;
+		this.display = display;
+		this.model = model;
+		this.brand = brand;
+		this.isValid = isValid;
+	}
 
 	public User(int id, String username, String password, boolean isValid) {
 		this.id = id;
@@ -40,6 +59,47 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getDisplay() {
+		return display;
+	}
+
+	public void setDisplay(String display) {
+		this.display = display;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 
 	public boolean isValid() {
