@@ -41,6 +41,8 @@ public class LoginServlet extends HttpServlet {// 登录servlet
 			if (verifyResult == 1) {
 				jsonObject.put("Result", "登录成功！");
 				jsonObject.put("Id", user.getId());
+				jsonObject.put("RegisterTime",user.getRegisterTime());
+				jsonObject.put("SyncTime",user.getSyncTime());
 			} else if (verifyResult == 0)
 				jsonObject.put("Result", "用户名或密码错误！");
 			else if (verifyResult == -1)

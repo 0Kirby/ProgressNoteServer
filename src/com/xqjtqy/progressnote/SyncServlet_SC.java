@@ -33,7 +33,7 @@ public class SyncServlet_SC extends HttpServlet { //Í¬²½servlet£¨·şÎñÆ÷µ½¿Í»§¶Ë£
 		response.setCharacterEncoding("utf-8");
 
 		try (PrintWriter out = response.getWriter()) {
-			int userId =Integer.valueOf( request.getParameter("userId").trim());// »ñÈ¡ÓÃ»§ID
+			int userId = Integer.valueOf(request.getParameter("userId").trim());// »ñÈ¡ÓÃ»§ID
 			ArrayList<Note> noteList = new ArrayList<>();
 			noteList = UserDAO.fetchServer(userId);// ´Ó·şÎñÆ÷»ñÈ¡¶ÔÓ¦ÓÃ»§µÄ±Ê¼ÇÁĞ±í
 			Note note;

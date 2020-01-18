@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServlet;
 public class DatabaseManager extends HttpServlet {//负责与数据库的连接
 	private static final long serialVersionUID = 1L;
 	ServletConfig config;
-	private static String db_url = "jdbc:mysql://请您在这里输入服务器的地址:3306/progress_note?autoReconnect=true&serverTimezone=CST";
-	//private static String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=CST";
+	private static String db_url = "jdbc:mysql://请您在这里输入服务器的地址:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
+	//private static String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
 	private static String db_username = "user";
 	private static String db_password = "mypassword";
 	private static Connection connection;
@@ -32,7 +32,7 @@ public class DatabaseManager extends HttpServlet {//负责与数据库的连接
 	{
 		if (!flag) {
 			Decrypt decrypt = new Decrypt();
-			db_url = decrypt.OperateURL(db_url);
+			//db_url = decrypt.OperateURL(db_url);
 			db_username = decrypt.OperateUser(db_username);
 			db_password = decrypt.OperatePass(db_password);
 			flag = true;

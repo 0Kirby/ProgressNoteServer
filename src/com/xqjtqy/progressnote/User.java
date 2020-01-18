@@ -10,11 +10,12 @@ public class User {
 	private String display;// 显示信息
 	private String model;// 型号
 	private String brand;// 品牌
-	
+	private long registerTime; // 注册时间
+	private long syncTime; // 同步时间
 	boolean isValid;// 账号是否有效
 
 	public User(int id, String username, String password, String language, String version, String display, String model,
-			String brand, boolean isValid) {
+			String brand, long registerTime, long syncTime, boolean isValid) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -23,13 +24,8 @@ public class User {
 		this.display = display;
 		this.model = model;
 		this.brand = brand;
-		this.isValid = isValid;
-	}
-
-	public User(int id, String username, String password, boolean isValid) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
+		this.registerTime = registerTime;
+		this.syncTime = syncTime;
 		this.isValid = isValid;
 	}
 
@@ -61,7 +57,6 @@ public class User {
 		this.password = password;
 	}
 
-	
 	public String getLanguage() {
 		return language;
 	}
@@ -108,6 +103,22 @@ public class User {
 
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
+	}
+
+	public long getRegisterTime() {
+		return registerTime;
+	}
+
+	public void setRegisterTime(long registerTime) {
+		this.registerTime = registerTime;
+	}
+
+	public long getSyncTime() {
+		return syncTime;
+	}
+
+	public void setSyncTime(long syncTime) {
+		this.syncTime = syncTime;
 	}
 
 }

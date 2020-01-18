@@ -4,7 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class UserDAO {// 用户数据处理内部逻辑
 
@@ -25,6 +29,9 @@ public class UserDAO {// 用户数据处理内部逻辑
 				user.setUsername(resultSet.getString("username"));
 				user.setPassword(resultSet.getString("password"));
 				user.setValid(resultSet.getBoolean("isValid"));
+				user.setRegisterTime(resultSet.getTimestamp("registerTime").getTime());
+				if (resultSet.getTimestamp("lastSync") != null)// 已经进行过同步
+					user.setSyncTime(resultSet.getTimestamp("lastSync").getTime());
 				if (resultSet.getBoolean("isValid") == true)// 如果账号有效，更新数据库中的lastUse字段
 				{
 					sqlStatement = new StringBuilder();
@@ -98,8 +105,7 @@ public class UserDAO {// 用户数据处理内部逻辑
 				noteList.add(note);
 			}
 			sqlStatement = new StringBuilder();// 更新数据库中的lastSync字段
-			sqlStatement.append(
-					"update progress_note.user SET lastSync=CURRENT_TIMESTAMP where id=" + userId);// SQL语句
+			sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP where id=" + userId);// SQL语句
 			try {
 				preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
 				preparedStatement2.executeUpdate();// 执行更新
@@ -115,6 +121,50 @@ public class UserDAO {// 用户数据处理内部逻辑
 			DatabaseManager.closeAll(connection, preparedStatement, resultSet);// 关闭连接
 		}
 		return null;
+	}
+
+	public static void pushServer(int userId, JSONArray jsonArray) {// 将笔记推送到服务器
+
+		Connection connection = DatabaseManager.getConnection();// 和数据库建立连接
+		PreparedStatement preparedStatement = null;
+		StringBuilder sqlStatement = new StringBuilder();
+		sqlStatement.append("delete from progress_note.note where userId=?");// SQL语句
+		try {
+			preparedStatement = connection.prepareStatement(sqlStatement.toString());
+			preparedStatement.setInt(1, userId);// 将第一个?替换为用户ID
+			preparedStatement.executeUpdate();// 执行更新
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		for (int i = 0; i < jsonArray.length(); i++) {// 从JSON数组中遍历出每个JSON对象
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			Note note = new Note();// 创建笔记对象
+			note.setNoteId(jsonObject.getInt("NoteId"));
+			note.setTime(jsonObject.getLong("Time"));
+			note.setTitle(jsonObject.getString("Title"));
+			note.setContent(jsonObject.getString("Content"));
+
+			sqlStatement = new StringBuilder();
+			preparedStatement = null;
+			sqlStatement.append("insert into progress_note.note (userId,noteId,title,time,content) values (?,?,?,?,?)");// SQL语句
+
+			try {
+				preparedStatement = connection.prepareStatement(sqlStatement.toString());
+				preparedStatement.setInt(1, userId);// 将第一个?替换为用户ID
+				preparedStatement.setInt(2, note.getNoteId());// 将第二个?替换为笔记ID
+				preparedStatement.setString(3, note.getTitle());// 将第三个?替换为标题
+				preparedStatement.setTimestamp(4, new Timestamp(note.getTime()));// 将第四个?替换为修改时间
+				preparedStatement.setString(5, note.getContent());// 将第五个?替换为内容
+				preparedStatement.executeUpdate();// 执行更新
+
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
+		DatabaseManager.closeAll(connection, preparedStatement, null);// 关闭连接
 	}
 
 }
