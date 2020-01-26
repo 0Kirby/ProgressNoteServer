@@ -32,7 +32,7 @@ public class DatabaseManager extends HttpServlet {//负责与数据库的连接
 	{
 		if (!flag) {
 			Decrypt decrypt = new Decrypt();
-			//db_url = decrypt.OperateURL(db_url);
+			db_url = decrypt.OperateURL(db_url);
 			db_username = decrypt.OperateUser(db_username);
 			db_password = decrypt.OperatePass(db_password);
 			flag = true;
