@@ -1,4 +1,4 @@
-package com.xqjtqy.progressnote;
+package cn.zerokirby.note;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

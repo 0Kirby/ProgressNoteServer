@@ -1,4 +1,4 @@
-package com.xqjtqy.progressnote;
+package cn.zerokirby.note;
 
 import java.io.IOException;
 import java.io.PrintWriter;

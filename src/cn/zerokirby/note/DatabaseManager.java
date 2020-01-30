@@ -1,4 +1,4 @@
-package com.xqjtqy.progressnote;
+package cn.zerokirby.note;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
