@@ -178,4 +178,22 @@ public class UserDAO {// 用户数据处理内部逻辑
 		}
 	}
 
+	public static void avatarPathDb(int userId, String avatarPath) {// 将头像路径写入数据库
+
+		Connection connection = DatabaseManager.getConnection();// 和数据库建立连接
+		PreparedStatement preparedStatement = null;
+		StringBuilder sqlStatement = new StringBuilder();
+		sqlStatement.append("update progress_note.user SET avatarPath=? ,lastSync=CURRENT_TIMESTAMP(3) where id=?");// SQL语句
+		try {
+			preparedStatement = connection.prepareStatement(sqlStatement.toString());
+			preparedStatement.setString(1, avatarPath);// 将第一个?替换为图片路径
+			preparedStatement.setInt(2, userId);// 将第二个?替换为用户ID
+			preparedStatement.executeUpdate();// 执行更新
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			DatabaseManager.closeAll(connection, preparedStatement, null);// 关闭连接
+		}
+	}
+
 }

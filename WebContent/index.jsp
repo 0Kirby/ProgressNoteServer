@@ -23,6 +23,14 @@
 			<input type="submit" value="查询" onClick="query()">
 		</p>
 	</form>
+	<form action="/progress_note_server/AvatarServlet" enctype="multipart/form-data" method="post">
+    上传人:<input type="text" name="userId">
+    选择文件:
+    <input type="file" name="upload">
+    <input type="submit" value="上传">
+</form>
+
+	
 </body>
 
 <script type="text/javascript">
