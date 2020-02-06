@@ -14,21 +14,6 @@ public class User {
 	private long syncTime; // 同步时间
 	boolean isValid;// 账号是否有效
 
-	public User(int id, String username, String password, String language, String version, String display, String model,
-			String brand, long registerTime, long syncTime, boolean isValid) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.language = language;
-		this.version = version;
-		this.display = display;
-		this.model = model;
-		this.brand = brand;
-		this.registerTime = registerTime;
-		this.syncTime = syncTime;
-		this.isValid = isValid;
-	}
-
 	public User() {
 
 	}
@@ -120,5 +105,5 @@ public class User {
 	public void setSyncTime(long syncTime) {
 		this.syncTime = syncTime;
 	}
-
+	
 }

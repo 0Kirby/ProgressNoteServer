@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 @MultipartConfig
-@WebServlet("/AvatarServlet")
-public class AvatarServlet extends HttpServlet { // 上传头像servlet
+@WebServlet("/UploadAvatarServlet")
+public class UploadAvatarServlet extends HttpServlet { // 上传头像servlet
 
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class AvatarServlet extends HttpServlet { // 上传头像servlet
 				continue;
 			}
 
-			String fileUUIDName = FileUtil.makeFileName(filename, userId);// 创建保存文件名
+			String fileUUIDName = FileUtil.makeFileName(filename);// 创建保存文件名
 
 			String saveDir = FileUtil.fileSave(fileUUIDName, savePathRoot);// 保存的目录
 

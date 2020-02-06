@@ -29,8 +29,8 @@ public class FileUtil {
 	}
 
 	// 防止文件提交上来重复名字，所以加上唯一的UUID
-	public static String makeFileName(String fileName, int userId) {
-		return UUID.randomUUID().toString() + "_" + userId + "_" + fileName;
+	public static String makeFileName(String fileName) {
+		return UUID.randomUUID().toString() + "_" + fileName;
 	}
 
 	/**

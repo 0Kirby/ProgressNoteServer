@@ -196,4 +196,26 @@ public class UserDAO {// 用户数据处理内部逻辑
 		}
 	}
 
+	public static String queryAvatarPath(int userId) {//查询头像路径
+		Connection connection = DatabaseManager.getConnection();// 和数据库建立连接
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String path = null;
+		StringBuilder sqlStatement = new StringBuilder();
+		sqlStatement.append("select avatarPath from progress_note.user where id=?");// SQL语句
+		try {
+			preparedStatement = connection.prepareStatement(sqlStatement.toString());
+			preparedStatement.setInt(1, userId);// 将第一个?替换为用户ID
+			resultSet = preparedStatement.executeQuery();// 执行更新
+			if(resultSet.next())
+				if(resultSet.getString("avatarPath")!=null)
+					path = resultSet.getString("avatarPath");
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			DatabaseManager.closeAll(connection, preparedStatement, null);// 关闭连接
+		}
+		return path;
+	}
+	
 }
