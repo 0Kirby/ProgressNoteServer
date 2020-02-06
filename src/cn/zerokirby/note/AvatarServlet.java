@@ -14,7 +14,7 @@ import javax.servlet.http.Part;
 
 @MultipartConfig
 @WebServlet("/AvatarServlet")
-public class AvatarServlet extends HttpServlet {
+public class AvatarServlet extends HttpServlet { // 上传头像servlet
 
 	/**
 	 * 
@@ -29,7 +29,7 @@ public class AvatarServlet extends HttpServlet {
 
 		int userId = Integer.valueOf(request.getParameter("userId").trim());// 获取用户ID
 
-		String savePathRoot = this.getServletContext().getRealPath("/WEB-INF/avatar");// 保存路径
+		String savePathRoot = "/usr/local/avatar";// 保存路径
 
 		Collection<Part> parts = request.getParts();
 		for (Part part : parts) {
