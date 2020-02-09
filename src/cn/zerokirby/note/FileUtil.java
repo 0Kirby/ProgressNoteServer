@@ -42,7 +42,7 @@ public class FileUtil {
 	 */
 	public static String extractFileName(String fileUUIDName) {
 		int index = fileUUIDName.lastIndexOf(fileUUIDName);
-		return fileUUIDName.substring(index + 1);
+		return fileUUIDName.substring(index);
 	}
 
 	/**

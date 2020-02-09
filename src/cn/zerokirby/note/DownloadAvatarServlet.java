@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class DownloadAvatarServlet
  */
 @WebServlet("/DownloadAvatarServlet")
-public class DownloadAvatarServlet extends HttpServlet {
+public class DownloadAvatarServlet extends HttpServlet { // 下载头像servlet
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -32,18 +32,18 @@ public class DownloadAvatarServlet extends HttpServlet {
 
 		final String avatarPath = UserDAO.queryAvatarPath(userId);
 
-		if (avatarPath != null) {
+		if (avatarPath != null) {// 如果存在头像
 			final String filePath = fileRoot + avatarPath;
-			final File file = new File(filePath);
+			final File file = new File(filePath);// 创建文件
 			if (file.exists()) {
 				response.setHeader("content-disposition",
 						"attachment;filename=" + URLEncoder.encode(userId + ".jpg", "UTF-8"));
 
-				FileInputStream inputStream = new FileInputStream(filePath);
-				ServletOutputStream servletOutputStream = response.getOutputStream();
-				byte[] buffer = new byte[1024];
+				FileInputStream inputStream = new FileInputStream(filePath);// 开启文件输入流
+				ServletOutputStream servletOutputStream = response.getOutputStream();// Servlet输出流
+				byte[] buffer = new byte[1024];// 缓冲区
 				int len;
-				while ((len = inputStream.read(buffer)) > 0) {
+				while ((len = inputStream.read(buffer)) > 0) {// 没写完继续写
 					servletOutputStream.write(buffer, 0, len);
 				}
 				inputStream.close();
