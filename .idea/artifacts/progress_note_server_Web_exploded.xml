@@ -9,6 +9,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib" />
+          <element id="library" level="application_server_libraries" name="Tomcat 10.0.0-M3" />
         </element>
       </element>
     </root>

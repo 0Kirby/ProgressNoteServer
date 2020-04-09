@@ -3,6 +3,11 @@
     <output-path>$PROJECT_DIR$/out/artifacts/progress_note_server_Web</output-path>
     <root id="archive" name="progress_note_server.war">
       <element id="artifact" artifact-name="progress_note_server:Web exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="application_server_libraries" name="Tomcat 10.0.0-M3" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>

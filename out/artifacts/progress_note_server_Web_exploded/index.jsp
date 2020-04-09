@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=GB2312"
-         pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +34,6 @@
     <input type="submit" value="上传">
 
 </form>
-<br><input type="submit" value="列出" onClick="location.href='ListFileServlet'">
 </body>
 
 <script type="text/javascript">
