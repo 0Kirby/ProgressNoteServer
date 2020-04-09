@@ -2,41 +2,41 @@ package cn.zerokirby.note;
 
 public class Note {
 
-	private int noteId; // 笔记ID
-	private String title; // 标题
-	private long time; // 修改时间
-	private String content; //内容
+    private int noteId; // 绗旇ID
+    private String title; // 鏍囬
+    private long time; // 淇敼鏃堕棿
+    private String content; //鍐呭
 
-	public int getNoteId() {
-		return noteId;
-	}
+    public int getNoteId() {
+        return noteId;
+    }
 
-	public void setNoteId(int noteId) {
-		this.noteId = noteId;
-	}
+    public void setNoteId(int noteId) {
+        this.noteId = noteId;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public long getTime() {
-		return time;
-	}
+    public long getTime() {
+        return time;
+    }
 
-	public void setTime(long time) {
-		this.time = time;
-	}
+    public void setTime(long time) {
+        this.time = time;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 }

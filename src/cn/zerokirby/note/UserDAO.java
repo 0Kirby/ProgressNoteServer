@@ -1,221 +1,217 @@
 package cn.zerokirby.note;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class UserDAO {// ÓÃ»§Êı¾İ´¦ÀíÄÚ²¿Âß¼­
+import java.sql.*;
+import java.util.ArrayList;
 
-	public static User queryUser(String username) {// ²éÑ¯ÓÃ»§
-		Connection connection = DatabaseManager.getConnection();// ºÍÊı¾İ¿â½¨Á¢Á¬½Ó
-		PreparedStatement preparedStatement = null;
-		PreparedStatement preparedStatement2 = null;
-		ResultSet resultSet = null;
-		StringBuilder sqlStatement = new StringBuilder();
-		sqlStatement.append("select * from progress_note.user where username=?");// SQLÓï¾ä
-		try {
-			preparedStatement = connection.prepareStatement(sqlStatement.toString());
-			preparedStatement.setString(1, username);// ½«µÚÒ»¸ö?Ìæ»»ÎªÓÃ»§Ãû
-			resultSet = preparedStatement.executeQuery();// Ö´ĞĞ²éÑ¯
-			User user = new User();
-			if (resultSet.next()) {// ¸ù¾İÊı¾İ¿âµÄÄÚÈİ¸øUser¶ÔÏó¸³Öµ
-				user.setId(resultSet.getInt("id"));
-				user.setUsername(resultSet.getString("username"));
-				user.setPassword(resultSet.getString("password"));
-				user.setValid(resultSet.getBoolean("isValid"));
-				user.setRegisterTime(resultSet.getTimestamp("registerTime").getTime());
-				if (resultSet.getTimestamp("lastSync") != null)// ÒÑ¾­½øĞĞ¹ıÍ¬²½
-					user.setSyncTime(resultSet.getTimestamp("lastSync").getTime());
-				if (resultSet.getBoolean("isValid") == true)// Èç¹ûÕËºÅÓĞĞ§£¬¸üĞÂÊı¾İ¿âÖĞµÄlastUse×Ö¶Î
-				{
-					sqlStatement = new StringBuilder();
-					sqlStatement.append("update progress_note.user SET lastUse=CURRENT_TIMESTAMP(3) where id="
-							+ resultSet.getInt("id"));// SQLÓï¾ä
-					try {
-						preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
-						preparedStatement2.executeUpdate();// Ö´ĞĞ¸üĞÂ
-					} catch (SQLException ex) {
-						ex.printStackTrace();
-					} finally {
-						DatabaseManager.closeAll(connection, preparedStatement2, null);// ¹Ø±ÕÁ¬½Ó
-					}
-				}
-				return user;
-			} else
-				return null;
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			return null;
-		} finally {
-			DatabaseManager.closeAll(connection, preparedStatement, resultSet);// ¹Ø±ÕÁ¬½Ó
-		}
-	}
+public class UserDAO {// ç”¨æˆ·æ•°æ®å¤„ç†å†…éƒ¨é€»è¾‘
 
-	public static int registerUser(String username, String password, String language, String version, String display,
-			String model, String brand) {// ×¢²áÓÃ»§
-		Connection connection = DatabaseManager.getConnection();// ºÍÊı¾İ¿â½¨Á¢Á¬½Ó
-		PreparedStatement preparedStatement = null;
-		StringBuilder sqlStatement = new StringBuilder();
-		sqlStatement.append(
-				"insert into progress_note.user (username,password,language,version,display,model,brand,isValid) values (?,?,?,?,?,?,?,1)");// SQLÓï¾ä
-		try {
-			preparedStatement = connection.prepareStatement(sqlStatement.toString());
-			preparedStatement.setString(1, username);// ½«µÚÒ»¸ö?Ìæ»»ÎªÓÃ»§Ãû
-			preparedStatement.setString(2, password);// ½«µÚ¶ş¸ö?Ìæ»»ÎªÃÜÂë
-			preparedStatement.setString(3, language);// ½«µÚÈı¸ö?Ìæ»»ÎªÓïÑÔ
-			preparedStatement.setString(4, version);// ½«µÚËÄ¸ö?Ìæ»»Îª°æ±¾
-			preparedStatement.setString(5, display);// ½«µÚÎå¸ö?Ìæ»»ÎªÏÔÊ¾
-			preparedStatement.setString(6, model);// ½«µÚÁù¸ö?Ìæ»»ÎªĞÍºÅ
-			preparedStatement.setString(7, brand);// ½«µÚÆß¸ö?Ìæ»»ÎªÆ·ÅÆ
-			preparedStatement.executeUpdate();// Ö´ĞĞ¸üĞÂ
-			User user = queryUser(username);
-			return user.getId();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		} finally {
-			DatabaseManager.closeAll(connection, preparedStatement, null);// ¹Ø±ÕÁ¬½Ó
-		}
-		return -1;
-	}
+    public static User queryUser(String username) {// æŸ¥è¯¢ç”¨æˆ·
+        Connection connection = DatabaseManager.getConnection();// å’Œæ•°æ®åº“å»ºç«‹è¿æ¥
+        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement2 = null;
+        ResultSet resultSet = null;
+        StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append("select * from progress_note.user where username=?");// SQLè¯­å¥
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement.toString());
+            preparedStatement.setString(1, username);// å°†ç¬¬ä¸€ä¸ª?æ›¿æ¢ä¸ºç”¨æˆ·å
+            resultSet = preparedStatement.executeQuery();// æ‰§è¡ŒæŸ¥è¯¢
+            User user = new User();
+            if (resultSet.next()) {// æ ¹æ®æ•°æ®åº“çš„å†…å®¹ç»™Userå¯¹è±¡èµ‹å€¼
+                user.setId(resultSet.getInt("id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+                user.setValid(resultSet.getBoolean("isValid"));
+                user.setRegisterTime(resultSet.getTimestamp("registerTime").getTime());
+                if (resultSet.getTimestamp("lastSync") != null)// å·²ç»è¿›è¡Œè¿‡åŒæ­¥
+                    user.setSyncTime(resultSet.getTimestamp("lastSync").getTime());
+                if (resultSet.getBoolean("isValid") == true)// å¦‚æœè´¦å·æœ‰æ•ˆï¼Œæ›´æ–°æ•°æ®åº“ä¸­çš„lastUseå­—æ®µ
+                {
+                    sqlStatement = new StringBuilder();
+                    sqlStatement.append("update progress_note.user SET lastUse=CURRENT_TIMESTAMP(3) where id="
+                            + resultSet.getInt("id"));// SQLè¯­å¥
+                    try {
+                        preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
+                        preparedStatement2.executeUpdate();// æ‰§è¡Œæ›´æ–°
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        DatabaseManager.closeAll(connection, preparedStatement2, null);// å…³é—­è¿æ¥
+                    }
+                }
+                return user;
+            } else
+                return null;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
+        } finally {
+            DatabaseManager.closeAll(connection, preparedStatement, resultSet);// å…³é—­è¿æ¥
+        }
+    }
 
-	public static ArrayList<Note> fetchServer(int userId) {// ´Ó·şÎñÆ÷»ñÈ¡±Ê¼Ç
-		Connection connection = DatabaseManager.getConnection();// ºÍÊı¾İ¿â½¨Á¢Á¬½Ó
-		PreparedStatement preparedStatement = null;
-		PreparedStatement preparedStatement2 = null;
-		ResultSet resultSet = null;
-		StringBuilder sqlStatement = new StringBuilder();
-		sqlStatement.append("select * from progress_note.note where userId=?");// SQLÓï¾ä
-		try {
-			preparedStatement = connection.prepareStatement(sqlStatement.toString());
-			preparedStatement.setInt(1, userId);// ½«µÚÒ»¸ö?Ìæ»»ÎªÓÃ»§ID
-			resultSet = preparedStatement.executeQuery();// Ö´ĞĞ²éÑ¯
-			ArrayList<Note> noteList = new ArrayList<>();
-			while (resultSet.next()) {// ¸ù¾İÊı¾İ¿âµÄÄÚÈİ¸øNote¶ÔÏó¸³Öµ
-				Note note = new Note();
-				note.setNoteId(resultSet.getInt("noteId"));
-				note.setTitle(resultSet.getString("title"));
-				note.setTime(resultSet.getTimestamp("time").getTime());
-				note.setContent(resultSet.getString("content"));
-				noteList.add(note);
-			}
-			sqlStatement = new StringBuilder();// ¸üĞÂÊı¾İ¿âÖĞµÄlastSync×Ö¶Î
-			sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=" + userId);// SQLÓï¾ä
-			try {
-				preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
-				preparedStatement2.executeUpdate();// Ö´ĞĞ¸üĞÂ
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			} finally {
-				DatabaseManager.closeAll(connection, preparedStatement2, null);// ¹Ø±ÕÁ¬½Ó
-			}
-			return noteList;
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		} finally {
-			DatabaseManager.closeAll(connection, preparedStatement, resultSet);// ¹Ø±ÕÁ¬½Ó
-		}
-		return null;
-	}
+    public static int registerUser(String username, String password, String language, String version, String display,
+                                   String model, String brand) {// æ³¨å†Œç”¨æˆ·
+        Connection connection = DatabaseManager.getConnection();// å’Œæ•°æ®åº“å»ºç«‹è¿æ¥
+        PreparedStatement preparedStatement = null;
+        StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append(
+                "insert into progress_note.user (username,password,language,version,display,model,brand,isValid) values (?,?,?,?,?,?,?,1)");// SQLè¯­å¥
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement.toString());
+            preparedStatement.setString(1, username);// å°†ç¬¬ä¸€ä¸ª?æ›¿æ¢ä¸ºç”¨æˆ·å
+            preparedStatement.setString(2, password);// å°†ç¬¬äºŒä¸ª?æ›¿æ¢ä¸ºå¯†ç 
+            preparedStatement.setString(3, language);// å°†ç¬¬ä¸‰ä¸ª?æ›¿æ¢ä¸ºè¯­è¨€
+            preparedStatement.setString(4, version);// å°†ç¬¬å››ä¸ª?æ›¿æ¢ä¸ºç‰ˆæœ¬
+            preparedStatement.setString(5, display);// å°†ç¬¬äº”ä¸ª?æ›¿æ¢ä¸ºæ˜¾ç¤º
+            preparedStatement.setString(6, model);// å°†ç¬¬å…­ä¸ª?æ›¿æ¢ä¸ºå‹å·
+            preparedStatement.setString(7, brand);// å°†ç¬¬ä¸ƒä¸ª?æ›¿æ¢ä¸ºå“ç‰Œ
+            preparedStatement.executeUpdate();// æ‰§è¡Œæ›´æ–°
+            User user = queryUser(username);
+            return user.getId();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            DatabaseManager.closeAll(connection, preparedStatement, null);// å…³é—­è¿æ¥
+        }
+        return -1;
+    }
 
-	public static void pushServer(int userId, JSONArray jsonArray) {// ½«±Ê¼ÇÍÆËÍµ½·şÎñÆ÷
+    public static ArrayList<Note> fetchServer(int userId) {// ä»æœåŠ¡å™¨è·å–ç¬”è®°
+        Connection connection = DatabaseManager.getConnection();// å’Œæ•°æ®åº“å»ºç«‹è¿æ¥
+        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement2 = null;
+        ResultSet resultSet = null;
+        StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append("select * from progress_note.note where userId=?");// SQLè¯­å¥
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement.toString());
+            preparedStatement.setInt(1, userId);// å°†ç¬¬ä¸€ä¸ª?æ›¿æ¢ä¸ºç”¨æˆ·ID
+            resultSet = preparedStatement.executeQuery();// æ‰§è¡ŒæŸ¥è¯¢
+            ArrayList<Note> noteList = new ArrayList<>();
+            while (resultSet.next()) {// æ ¹æ®æ•°æ®åº“çš„å†…å®¹ç»™Noteå¯¹è±¡èµ‹å€¼
+                Note note = new Note();
+                note.setNoteId(resultSet.getInt("noteId"));
+                note.setTitle(resultSet.getString("title"));
+                note.setTime(resultSet.getTimestamp("time").getTime());
+                note.setContent(resultSet.getString("content"));
+                noteList.add(note);
+            }
+            sqlStatement = new StringBuilder();// æ›´æ–°æ•°æ®åº“ä¸­çš„lastSyncå­—æ®µ
+            sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=" + userId);// SQLè¯­å¥
+            try {
+                preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
+                preparedStatement2.executeUpdate();// æ‰§è¡Œæ›´æ–°
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                DatabaseManager.closeAll(connection, preparedStatement2, null);// å…³é—­è¿æ¥
+            }
+            return noteList;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            DatabaseManager.closeAll(connection, preparedStatement, resultSet);// å…³é—­è¿æ¥
+        }
+        return null;
+    }
 
-		Connection connection = DatabaseManager.getConnection();// ºÍÊı¾İ¿â½¨Á¢Á¬½Ó
-		PreparedStatement preparedStatement = null;
-		PreparedStatement preparedStatement2 = null;
-		StringBuilder sqlStatement = new StringBuilder();
-		sqlStatement.append("delete from progress_note.note where userId=?");// SQLÓï¾ä
-		try {
-			preparedStatement = connection.prepareStatement(sqlStatement.toString());
-			preparedStatement.setInt(1, userId);// ½«µÚÒ»¸ö?Ìæ»»ÎªÓÃ»§ID
-			preparedStatement.executeUpdate();// Ö´ĞĞ¸üĞÂ
+    public static void pushServer(int userId, JSONArray jsonArray) {// å°†ç¬”è®°æ¨é€åˆ°æœåŠ¡å™¨
 
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
+        Connection connection = DatabaseManager.getConnection();// å’Œæ•°æ®åº“å»ºç«‹è¿æ¥
+        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatement2 = null;
+        StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append("delete from progress_note.note where userId=?");// SQLè¯­å¥
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement.toString());
+            preparedStatement.setInt(1, userId);// å°†ç¬¬ä¸€ä¸ª?æ›¿æ¢ä¸ºç”¨æˆ·ID
+            preparedStatement.executeUpdate();// æ‰§è¡Œæ›´æ–°
 
-		for (int i = 0; i < jsonArray.length(); i++) {// ´ÓJSONÊı×éÖĞ±éÀú³öÃ¿¸öJSON¶ÔÏó
-			JSONObject jsonObject = jsonArray.getJSONObject(i);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
 
-			Note note = new Note();// ´´½¨±Ê¼Ç¶ÔÏó
-			note.setNoteId(jsonObject.getInt("NoteId"));
-			note.setTime(jsonObject.getLong("Time"));
-			note.setTitle(jsonObject.getString("Title"));
-			note.setContent(jsonObject.getString("Content"));
+        for (int i = 0; i < jsonArray.length(); i++) {// ä»JSONæ•°ç»„ä¸­éå†å‡ºæ¯ä¸ªJSONå¯¹è±¡
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			sqlStatement = new StringBuilder();
-			preparedStatement = null;
-			sqlStatement.append("insert into progress_note.note (userId,noteId,title,time,content) values (?,?,?,?,?)");// SQLÓï¾ä
+            Note note = new Note();// åˆ›å»ºç¬”è®°å¯¹è±¡
+            note.setNoteId(jsonObject.getInt("NoteId"));
+            note.setTime(jsonObject.getLong("Time"));
+            note.setTitle(jsonObject.getString("Title"));
+            note.setContent(jsonObject.getString("Content"));
 
-			try {
-				preparedStatement = connection.prepareStatement(sqlStatement.toString());
-				preparedStatement.setInt(1, userId);// ½«µÚÒ»¸ö?Ìæ»»ÎªÓÃ»§ID
-				preparedStatement.setInt(2, note.getNoteId());// ½«µÚ¶ş¸ö?Ìæ»»Îª±Ê¼ÇID
-				preparedStatement.setString(3, note.getTitle());// ½«µÚÈı¸ö?Ìæ»»Îª±êÌâ
-				preparedStatement.setTimestamp(4, new Timestamp(note.getTime()));// ½«µÚËÄ¸ö?Ìæ»»ÎªĞŞ¸ÄÊ±¼ä
-				preparedStatement.setString(5, note.getContent());// ½«µÚÎå¸ö?Ìæ»»ÎªÄÚÈİ
-				preparedStatement.executeUpdate();// Ö´ĞĞ¸üĞÂ
+            sqlStatement = new StringBuilder();
+            preparedStatement = null;
+            sqlStatement.append("insert into progress_note.note (userId,noteId,title,time,content) values (?,?,?,?,?)");// SQLè¯­å¥
 
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			}
-		}
-		DatabaseManager.closeAll(connection, preparedStatement, null);// ¹Ø±ÕÁ¬½Ó
-		sqlStatement = new StringBuilder();// ¸üĞÂÊı¾İ¿âÖĞµÄlastSync×Ö¶Î
-		sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=" + userId);// SQLÓï¾ä
-		try {
-			preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
-			preparedStatement2.executeUpdate();// Ö´ĞĞ¸üĞÂ
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		} finally {
-			DatabaseManager.closeAll(connection, preparedStatement2, null);// ¹Ø±ÕÁ¬½Ó
-		}
-	}
+            try {
+                preparedStatement = connection.prepareStatement(sqlStatement.toString());
+                preparedStatement.setInt(1, userId);// å°†ç¬¬ä¸€ä¸ª?æ›¿æ¢ä¸ºç”¨æˆ·ID
+                preparedStatement.setInt(2, note.getNoteId());// å°†ç¬¬äºŒä¸ª?æ›¿æ¢ä¸ºç¬”è®°ID
+                preparedStatement.setString(3, note.getTitle());// å°†ç¬¬ä¸‰ä¸ª?æ›¿æ¢ä¸ºæ ‡é¢˜
+                preparedStatement.setTimestamp(4, new Timestamp(note.getTime()));// å°†ç¬¬å››ä¸ª?æ›¿æ¢ä¸ºä¿®æ”¹æ—¶é—´
+                preparedStatement.setString(5, note.getContent());// å°†ç¬¬äº”ä¸ª?æ›¿æ¢ä¸ºå†…å®¹
+                preparedStatement.executeUpdate();// æ‰§è¡Œæ›´æ–°
 
-	public static void avatarPathDb(int userId, String avatarPath) {// ½«Í·ÏñÂ·¾¶Ğ´ÈëÊı¾İ¿â
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        DatabaseManager.closeAll(connection, preparedStatement, null);// å…³é—­è¿æ¥
+        sqlStatement = new StringBuilder();// æ›´æ–°æ•°æ®åº“ä¸­çš„lastSyncå­—æ®µ
+        sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=" + userId);// SQLè¯­å¥
+        try {
+            preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
+            preparedStatement2.executeUpdate();// æ‰§è¡Œæ›´æ–°
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            DatabaseManager.closeAll(connection, preparedStatement2, null);// å…³é—­è¿æ¥
+        }
+    }
 
-		Connection connection = DatabaseManager.getConnection();// ºÍÊı¾İ¿â½¨Á¢Á¬½Ó
-		PreparedStatement preparedStatement = null;
-		StringBuilder sqlStatement = new StringBuilder();
-		sqlStatement.append("update progress_note.user SET avatarPath=? ,lastSync=CURRENT_TIMESTAMP(3) where id=?");// SQLÓï¾ä
-		try {
-			preparedStatement = connection.prepareStatement(sqlStatement.toString());
-			preparedStatement.setString(1, avatarPath);// ½«µÚÒ»¸ö?Ìæ»»ÎªÍ¼Æ¬Â·¾¶
-			preparedStatement.setInt(2, userId);// ½«µÚ¶ş¸ö?Ìæ»»ÎªÓÃ»§ID
-			preparedStatement.executeUpdate();// Ö´ĞĞ¸üĞÂ
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		} finally {
-			DatabaseManager.closeAll(connection, preparedStatement, null);// ¹Ø±ÕÁ¬½Ó
-		}
-	}
+    public static void avatarPathDb(int userId, String avatarPath) {// å°†å¤´åƒè·¯å¾„å†™å…¥æ•°æ®åº“
 
-	public static String queryAvatarPath(int userId) {//²éÑ¯Í·ÏñÂ·¾¶
-		Connection connection = DatabaseManager.getConnection();// ºÍÊı¾İ¿â½¨Á¢Á¬½Ó
-		PreparedStatement preparedStatement = null;
-		ResultSet resultSet = null;
-		String path = null;
-		StringBuilder sqlStatement = new StringBuilder();
-		sqlStatement.append("select avatarPath from progress_note.user where id=?");// SQLÓï¾ä
-		try {
-			preparedStatement = connection.prepareStatement(sqlStatement.toString());
-			preparedStatement.setInt(1, userId);// ½«µÚÒ»¸ö?Ìæ»»ÎªÓÃ»§ID
-			resultSet = preparedStatement.executeQuery();// Ö´ĞĞ¸üĞÂ
-			if(resultSet.next())
-				if(resultSet.getString("avatarPath")!=null)
-					path = resultSet.getString("avatarPath");
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		} finally {
-			DatabaseManager.closeAll(connection, preparedStatement, null);// ¹Ø±ÕÁ¬½Ó
-		}
-		return path;
-	}
-	
+        Connection connection = DatabaseManager.getConnection();// å’Œæ•°æ®åº“å»ºç«‹è¿æ¥
+        PreparedStatement preparedStatement = null;
+        StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append("update progress_note.user SET avatarPath=? ,lastSync=CURRENT_TIMESTAMP(3) where id=?");// SQLè¯­å¥
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement.toString());
+            preparedStatement.setString(1, avatarPath);// å°†ç¬¬ä¸€ä¸ª?æ›¿æ¢ä¸ºå›¾ç‰‡è·¯å¾„
+            preparedStatement.setInt(2, userId);// å°†ç¬¬äºŒä¸ª?æ›¿æ¢ä¸ºç”¨æˆ·ID
+            preparedStatement.executeUpdate();// æ‰§è¡Œæ›´æ–°
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            DatabaseManager.closeAll(connection, preparedStatement, null);// å…³é—­è¿æ¥
+        }
+    }
+
+    public static String queryAvatarPath(int userId) {//æŸ¥è¯¢å¤´åƒè·¯å¾„
+        Connection connection = DatabaseManager.getConnection();// å’Œæ•°æ®åº“å»ºç«‹è¿æ¥
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String path = null;
+        StringBuilder sqlStatement = new StringBuilder();
+        sqlStatement.append("select avatarPath from progress_note.user where id=?");// SQLè¯­å¥
+        try {
+            preparedStatement = connection.prepareStatement(sqlStatement.toString());
+            preparedStatement.setInt(1, userId);// å°†ç¬¬ä¸€ä¸ª?æ›¿æ¢ä¸ºç”¨æˆ·ID
+            resultSet = preparedStatement.executeQuery();// æ‰§è¡Œæ›´æ–°
+            if (resultSet.next())
+                if (resultSet.getString("avatarPath") != null)
+                    path = resultSet.getString("avatarPath");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            DatabaseManager.closeAll(connection, preparedStatement, null);// å…³é—­è¿æ¥
+        }
+        return path;
+    }
+
 }

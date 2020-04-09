@@ -1,78 +1,77 @@
 package cn.zerokirby.note;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet implementation class LoginServlet
  */
 @WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {// µÇÂ¼servlet
-	private static final long serialVersionUID = 1L;
-	static User user;
+public class LoginServlet extends HttpServlet {// ç™»å½•servlet
+    private static final long serialVersionUID = 1L;
+    static User user;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=utf-8");// ÉèÖÃ×ªÂë¸ñÊ½
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        response.setContentType("text/html;charset=utf-8");// è®¾ç½®è½¬ç æ ¼å¼
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
 
-		try (PrintWriter out = response.getWriter()) {
-			String username = request.getParameter("username").trim();// »ñÈ¡ÓÃ»§Ãû
-			String password = request.getParameter("password").trim();// »ñÈ¡ÃÜÂë
+        try (PrintWriter out = response.getWriter()) {
+            String username = request.getParameter("username").trim();// è·å–ç”¨æˆ·å
+            String password = request.getParameter("password").trim();// è·å–å¯†ç 
 
-			int verifyResult = verifyUser(username, password);// Ğ£ÑéÓÃ»§
+            int verifyResult = verifyUser(username, password);// æ ¡éªŒç”¨æˆ·
 
-			JSONObject jsonObject = new JSONObject();// ´´½¨JSON¶ÔÏó
+            JSONObject jsonObject = new JSONObject();// åˆ›å»ºJSONå¯¹è±¡
 
-			if (verifyResult == 1) {
-				jsonObject.put("Result", "µÇÂ¼³É¹¦£¡");
-				jsonObject.put("Id", user.getId());
-				jsonObject.put("RegisterTime",user.getRegisterTime());
-				jsonObject.put("SyncTime",user.getSyncTime());
-			} else if (verifyResult == 0)
-				jsonObject.put("Result", "ÓÃ»§Ãû»òÃÜÂë´íÎó£¡");
-			else if (verifyResult == -1)
-				jsonObject.put("Result", "¸ÃÓÃ»§ÒÑ±»Í£ÓÃ£¡");
-			else
-				jsonObject.put("Result", "ÓÃ»§²»´æÔÚ£¡");
+            if (verifyResult == 1) {
+                jsonObject.put("Result", "ç™»å½•æˆåŠŸï¼");
+                jsonObject.put("Id", user.getId());
+                jsonObject.put("RegisterTime", user.getRegisterTime());
+                jsonObject.put("SyncTime", user.getSyncTime());
+            } else if (verifyResult == 0)
+                jsonObject.put("Result", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯ï¼");
+            else if (verifyResult == -1)
+                jsonObject.put("Result", "è¯¥ç”¨æˆ·å·²è¢«åœç”¨ï¼");
+            else
+                jsonObject.put("Result", "ç”¨æˆ·ä¸å­˜åœ¨ï¼");
 
-			out.write(jsonObject.toString());// Êä³öJSON×Ö·û´®
-		}
-	}
+            out.write(jsonObject.toString());// è¾“å‡ºJSONå­—ç¬¦ä¸²
+        }
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 
-	private int verifyUser(String username, String password) {// Ğ£ÑéÓÃ»§Ìá¹©µÄµÇÂ¼Æ¾¾İ
-		user = UserDAO.queryUser(username);// Í¨¹ıÓÃ»§Ãû²éÑ¯ÓÃ»§
-		if (user != null && user.isValid && password.equals(user.getPassword()))// ÓÃ»§´æÔÚ¡¢ÓĞĞ§ÇÒÃÜÂëÕıÈ·
-			return 1;
-		else if (user != null && user.isValid && !password.equals(user.getPassword()))// ÓÃ»§´æÔÚ¡¢ÓĞĞ§µ«ÃÜÂë´íÎó
-			return 0;
-		else if (user != null && !user.isValid)// ÓÃ»§ÒÑ±»Í£ÓÃ
-			return -1;
-		else
-			return -2;// ÓÃ»§²»´æÔÚ
-	}
+    private int verifyUser(String username, String password) {// æ ¡éªŒç”¨æˆ·æä¾›çš„ç™»å½•å‡­æ®
+        user = UserDAO.queryUser(username);// é€šè¿‡ç”¨æˆ·åæŸ¥è¯¢ç”¨æˆ·
+        if (user != null && user.isValid && password.equals(user.getPassword()))// ç”¨æˆ·å­˜åœ¨ã€æœ‰æ•ˆä¸”å¯†ç æ­£ç¡®
+            return 1;
+        else if (user != null && user.isValid && !password.equals(user.getPassword()))// ç”¨æˆ·å­˜åœ¨ã€æœ‰æ•ˆä½†å¯†ç é”™è¯¯
+            return 0;
+        else if (user != null && !user.isValid)// ç”¨æˆ·å·²è¢«åœç”¨
+            return -1;
+        else
+            return -2;// ç”¨æˆ·ä¸å­˜åœ¨
+    }
 }

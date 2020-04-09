@@ -5,66 +5,65 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FileUtil {
-	/**
-	 * ¸ù¾İhash´òÉ¢ÎÄ¼ş£¬È»ºó»ñÈ¡±£´æÄ¿Â¼
-	 *
-	 * @param filename     ÎÄ¼şÃû³Æ
-	 * @param fileSaveRoot ÎÄ¼ş±£´æ¸ùÄ¿Â¼
-	 * @return ÎÄ¼şÊµ¼Ê±£´æÄ¿Â¼
-	 */
-	public static String fileSave(String filename, String fileSaveRoot) {
-		int hash = filename.hashCode();
-		int dir1 = hash & 0xf;// 0-15
-		int dir2 = (hash & 0xf0) >> 4;// 0-15
+    /**
+     * æ ¹æ®hashæ‰“æ•£æ–‡ä»¶ï¼Œç„¶åè·å–ä¿å­˜ç›®å½•
+     *
+     * @param filename     æ–‡ä»¶åç§°
+     * @param fileSaveRoot æ–‡ä»¶ä¿å­˜æ ¹ç›®å½•
+     * @return æ–‡ä»¶å®é™…ä¿å­˜ç›®å½•
+     */
+    public static String fileSave(String filename, String fileSaveRoot) {
+        int hash = filename.hashCode();
+        int dir1 = hash & 0xf;// 0-15
+        int dir2 = (hash & 0xf0) >> 4;// 0-15
 
-		String relativePath = File.separator + dir1 + File.separator + dir2;
-		String fileSavePath = fileSaveRoot + File.separator + dir1 + File.separator + dir2;
-		System.out.println(fileSavePath);
-		File file = new File(fileSavePath);
-		if (!file.exists()) {
-			// ¶ş¼¶Ä¿Â¼ĞèÒªÁ¬Ğø´´½¨Á½¸ö
-			file.mkdirs();
-		}
-		return relativePath;
-	}
+        String relativePath = File.separator + dir1 + File.separator + dir2;
+        String fileSavePath = fileSaveRoot + File.separator + dir1 + File.separator + dir2;
+        System.out.println(fileSavePath);
+        File file = new File(fileSavePath);
+        if (!file.exists()) {
+            // äºŒçº§ç›®å½•éœ€è¦è¿ç»­åˆ›å»ºä¸¤ä¸ª
+            file.mkdirs();
+        }
+        return relativePath;
+    }
 
-	// ·ÀÖ¹ÎÄ¼şÌá½»ÉÏÀ´ÖØ¸´Ãû×Ö£¬ËùÒÔ¼ÓÉÏÎ¨Ò»µÄUUID
-	public static String makeFileName(String fileName) {
-		return UUID.randomUUID().toString() + "_" + fileName;
-	}
+    // é˜²æ­¢æ–‡ä»¶æäº¤ä¸Šæ¥é‡å¤åå­—ï¼Œæ‰€ä»¥åŠ ä¸Šå”¯ä¸€çš„UUID
+    public static String makeFileName(String fileName) {
+        return UUID.randomUUID().toString() + "_" + fileName;
+    }
 
-	/**
-	 *
-	 * Ö÷ÒªÊÇÎªÁËÖ®ºóÕ¹Ê¾¸øÓÃ»§¿´£¬´øÉÏUUID²»ÊÇºÜÄÑÊÜ£¿
-	 * 
-	 * @param fileUUIDName UUIDÎÄ¼şÃû
-	 * @return ½ØÈ¡Ö®ºóµÄÃû×Ö
-	 */
-	public static String extractFileName(String fileUUIDName) {
-		int index = fileUUIDName.lastIndexOf(fileUUIDName);
-		return fileUUIDName.substring(index);
-	}
+    /**
+     * ä¸»è¦æ˜¯ä¸ºäº†ä¹‹åå±•ç¤ºç»™ç”¨æˆ·çœ‹ï¼Œå¸¦ä¸ŠUUIDä¸æ˜¯å¾ˆéš¾å—ï¼Ÿ
+     *
+     * @param fileUUIDName UUIDæ–‡ä»¶å
+     * @return æˆªå–ä¹‹åçš„åå­—
+     */
+    public static String extractFileName(String fileUUIDName) {
+        int index = fileUUIDName.lastIndexOf(fileUUIDName);
+        return fileUUIDName.substring(index);
+    }
 
-	/**
-	 * µİ¹é±éÀúÎÄ¼şÊ÷£¬½«Öµ´æ½ømapÖĞ±ãÓÚjspÕ¹Ê¾
-	 *
-	 * @param f   ÎÄ¼ş
-	 * @param map ´æ·ÅÎÄ¼şµÄmap£¬¼üÊÇUUIDÃû×Ö£¬ÖµÊÇ½ØÈ¡UUIDºóµÄ
-	 */
-	public static void putFiles(File f, Map<String, String> map) {
-		File[] files = f.listFiles();
-		for (File file : files) {
-			if (file == null) {
-				// »ØËİµã
-				return;
-			}
-			if (file.isDirectory()) {
-				putFiles(file, map);
-			} else {
-				String fileUUIDName = file.getName();
-				String fileName = extractFileName(fileUUIDName);
-				map.put(fileUUIDName, fileName);
-			}
-		}
-	}
+    /**
+     * é€’å½’éå†æ–‡ä»¶æ ‘ï¼Œå°†å€¼å­˜è¿›mapä¸­ä¾¿äºjspå±•ç¤º
+     *
+     * @param f   æ–‡ä»¶
+     * @param map å­˜æ”¾æ–‡ä»¶çš„mapï¼Œé”®æ˜¯UUIDåå­—ï¼Œå€¼æ˜¯æˆªå–UUIDåçš„
+     */
+    public static void putFiles(File f, Map<String, String> map) {
+        File[] files = f.listFiles();
+        for (File file : files) {
+            if (file == null) {
+                // å›æº¯ç‚¹
+                return;
+            }
+            if (file.isDirectory()) {
+                putFiles(file, map);
+            } else {
+                String fileUUIDName = file.getName();
+                String fileName = extractFileName(fileUUIDName);
+                map.put(fileUUIDName, fileName);
+            }
+        }
+    }
 }

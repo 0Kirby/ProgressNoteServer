@@ -1,9 +1,5 @@
 package cn.zerokirby.note;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -11,48 +7,51 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
 
 @MultipartConfig
 @WebServlet("/UploadAvatarServlet")
-public class UploadAvatarServlet extends HttpServlet { // ÉÏ´«Í·Ïñservlet
+public class UploadAvatarServlet extends HttpServlet { // ä¸Šä¼ å¤´åƒservlet
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=utf-8");// ÉèÖÃ×ªÂë¸ñÊ½
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html;charset=utf-8");// è®¾ç½®è½¬ç æ ¼å¼
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
 
-		int userId = Integer.valueOf(request.getParameter("userId").trim());// »ñÈ¡ÓÃ»§ID
+        int userId = Integer.valueOf(request.getParameter("userId").trim());// è·å–ç”¨æˆ·ID
 
-		String savePathRoot = "/usr/local/avatar";// ±£´æÂ·¾¶
+        String savePathRoot = "/usr/local/avatar";// ä¿å­˜è·¯å¾„
 
-		Collection<Part> parts = request.getParts();
-		for (Part part : parts) {
+        Collection<Part> parts = request.getParts();
+        for (Part part : parts) {
 
-			// »ñµÃÌá½»µÄÃû×Ö
-			String filename = part.getSubmittedFileName();
+            // è·å¾—æäº¤çš„åå­—
+            String filename = part.getSubmittedFileName();
 
-			// ¶ÔÓÚ²»ÊÇÉÏ´«ÎÄ¼şµÄinput»á´«À´¿ÕÖµ£¬»òÕßÄãÃ»ÓĞÖ¸¶¨ÉÏ´«µÄÎÄ¼şÒ²ÊÇnull£¬ÕâÀï¹ıÂËÒ»ÏÂ
-			if (filename == null) {
-				continue;
-			}
+            // å¯¹äºä¸æ˜¯ä¸Šä¼ æ–‡ä»¶çš„inputä¼šä¼ æ¥ç©ºå€¼ï¼Œæˆ–è€…ä½ æ²¡æœ‰æŒ‡å®šä¸Šä¼ çš„æ–‡ä»¶ä¹Ÿæ˜¯nullï¼Œè¿™é‡Œè¿‡æ»¤ä¸€ä¸‹
+            if (filename == null) {
+                continue;
+            }
 
-			String fileUUIDName = FileUtil.makeFileName(filename);// ´´½¨±£´æÎÄ¼şÃû
+            String fileUUIDName = FileUtil.makeFileName(filename);// åˆ›å»ºä¿å­˜æ–‡ä»¶å
 
-			String saveDir = FileUtil.fileSave(fileUUIDName, savePathRoot);// ±£´æµÄÄ¿Â¼
+            String saveDir = FileUtil.fileSave(fileUUIDName, savePathRoot);// ä¿å­˜çš„ç›®å½•
 
-			// File.separatorÊÇ×ÔÊÊÓ¦µÄwindowsºÍlinux·Ö¸ô·û¾ÍÊÇ\\ºÍ/
-			part.write(savePathRoot + saveDir + File.separator + fileUUIDName);
-			// É¾³ıÁÙÊ±ÎÄ¼ş
-			part.delete();
+            // File.separatoræ˜¯è‡ªé€‚åº”çš„windowså’Œlinuxåˆ†éš”ç¬¦å°±æ˜¯\\å’Œ/
+            part.write(savePathRoot + saveDir + File.separator + fileUUIDName);
+            // åˆ é™¤ä¸´æ—¶æ–‡ä»¶
+            part.delete();
 
-			UserDAO.avatarPathDb(userId, saveDir + File.separator + fileUUIDName);
-		}
+            UserDAO.avatarPathDb(userId, saveDir + File.separator + fileUUIDName);
+        }
 	}
 
 	@Override

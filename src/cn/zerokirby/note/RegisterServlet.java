@@ -1,72 +1,68 @@
 package cn.zerokirby.note;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet implementation class RegisterServlet
  */
 @WebServlet("/RegisterServlet")
-public class RegisterServlet extends HttpServlet {// ×¢²áservlet
-	private static final long serialVersionUID = 1L;
-	static User user;
+public class RegisterServlet extends HttpServlet {// æ³¨å†Œservlet
+    private static final long serialVersionUID = 1L;
+    static User user;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doPost(request, response);
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doPost(request, response);
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=utf-8");// ÉèÖÃ×ªÂë¸ñÊ½
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        response.setContentType("text/html;charset=utf-8");// è®¾ç½®è½¬ç æ ¼å¼
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
 
-		try (PrintWriter out = response.getWriter()) {
-			String username = request.getParameter("username").trim();// »ñÈ¡ÓÃ»§Ãû
-			String password = request.getParameter("password").trim();// »ñÈ¡ÃÜÂë
-			String language = request.getParameter("language").trim();// »ñÈ¡ÓïÑÔ
-			String version = request.getParameter("version").trim();// »ñÈ¡°æ±¾
-			String display = request.getParameter("display").trim();// »ñÈ¡ÏÔÊ¾ĞÅÏ¢
-			String model = request.getParameter("model").trim();// »ñÈ¡ĞÍºÅ
-			String brand = request.getParameter("brand").trim();// »ñÈ¡Æ·ÅÆ
+        try (PrintWriter out = response.getWriter()) {
+            String username = request.getParameter("username").trim();// è·å–ç”¨æˆ·å
+            String password = request.getParameter("password").trim();// è·å–å¯†ç 
+            String language = request.getParameter("language").trim();// è·å–è¯­è¨€
+            String version = request.getParameter("version").trim();// è·å–ç‰ˆæœ¬
+            String display = request.getParameter("display").trim();// è·å–æ˜¾ç¤ºä¿¡æ¯
+            String model = request.getParameter("model").trim();// è·å–å‹å·
+            String brand = request.getParameter("brand").trim();// è·å–å“ç‰Œ
 
-			JSONObject jsonObject = new JSONObject();// ´´½¨JSON¶ÔÏó
+            JSONObject jsonObject = new JSONObject();// åˆ›å»ºJSONå¯¹è±¡
 
-			if (isExist(username))
-				jsonObject.put("Result", "ÓÃ»§ÒÑ´æÔÚ£¡");
-			else {
-				int id = UserDAO.registerUser(username, password, language, version, display, model, brand);
-				jsonObject.put("Result", "×¢²á³É¹¦£¡");
-				jsonObject.put("Id", id);
-			}
-			out.write(jsonObject.toString());// Êä³öJSON×Ö·û´®
-		}
-	}
+            if (isExist(username))
+                jsonObject.put("Result", "ç”¨æˆ·å·²å­˜åœ¨ï¼");
+            else {
+                int id = UserDAO.registerUser(username, password, language, version, display, model, brand);
+                jsonObject.put("Result", "æ³¨å†ŒæˆåŠŸï¼");
+                jsonObject.put("Id", id);
+            }
+            out.write(jsonObject.toString());// è¾“å‡ºJSONå­—ç¬¦ä¸²
+        }
+    }
 
-	private Boolean isExist(String username) {// ²éÑ¯ÓÃ»§ÊÇ·ñ´æÔÚ
-		user = UserDAO.queryUser(username);
-		if (user == null)
-			return false;
-		else
-			return true;
-	}
+    private Boolean isExist(String username) {// æŸ¥è¯¢ç”¨æˆ·æ˜¯å¦å­˜åœ¨
+        user = UserDAO.queryUser(username);
+        return user != null;
+    }
 }

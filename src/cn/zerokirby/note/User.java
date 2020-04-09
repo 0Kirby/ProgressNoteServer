@@ -2,108 +2,108 @@ package cn.zerokirby.note;
 
 public class User {
 
-	private int id;// id
-	private String username;// ÓÃ»§Ãû
-	private String password;// ÃÜÂë
-	private String language;// ÓïÑÔ
-	private String version;// °æ±¾
-	private String display;// ÏÔÊ¾ĞÅÏ¢
-	private String model;// ĞÍºÅ
-	private String brand;// Æ·ÅÆ
-	private long registerTime; // ×¢²áÊ±¼ä
-	private long syncTime; // Í¬²½Ê±¼ä
-	boolean isValid;// ÕËºÅÊÇ·ñÓĞĞ§
+    boolean isValid;// è´¦å·æ˜¯å¦æœ‰æ•ˆ
+    private int id;// id
+    private String username;// ç”¨æˆ·å
+    private String password;// å¯†ç 
+    private String language;// è¯­è¨€
+    private String version;// ç‰ˆæœ¬
+    private String display;// æ˜¾ç¤ºä¿¡æ¯
+    private String model;// å‹å·
+    private String brand;// å“ç‰Œ
+    private long registerTime; // æ³¨å†Œæ—¶é—´
+    private long syncTime; // åŒæ­¥æ—¶é—´
 
-	public User() {
+    public User() {
 
-	}
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getLanguage() {
-		return language;
-	}
+    public String getLanguage() {
+        return language;
+    }
 
-	public void setLanguage(String language) {
-		this.language = language;
-	}
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public String getVersion() {
+        return version;
+    }
 
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public String getDisplay() {
-		return display;
-	}
+    public String getDisplay() {
+        return display;
+    }
 
-	public void setDisplay(String display) {
-		this.display = display;
-	}
+    public void setDisplay(String display) {
+        this.display = display;
+    }
 
-	public String getModel() {
-		return model;
-	}
+    public String getModel() {
+        return model;
+    }
 
-	public void setModel(String model) {
-		this.model = model;
-	}
+    public void setModel(String model) {
+        this.model = model;
+    }
 
-	public String getBrand() {
-		return brand;
-	}
+    public String getBrand() {
+        return brand;
+    }
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
-	public boolean isValid() {
-		return isValid;
-	}
+    public boolean isValid() {
+        return isValid;
+    }
 
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
-	}
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
+    }
 
-	public long getRegisterTime() {
-		return registerTime;
-	}
+    public long getRegisterTime() {
+        return registerTime;
+    }
 
-	public void setRegisterTime(long registerTime) {
-		this.registerTime = registerTime;
-	}
+    public void setRegisterTime(long registerTime) {
+        this.registerTime = registerTime;
+    }
 
-	public long getSyncTime() {
-		return syncTime;
-	}
+    public long getSyncTime() {
+        return syncTime;
+    }
 
-	public void setSyncTime(long syncTime) {
-		this.syncTime = syncTime;
-	}
-	
+    public void setSyncTime(long syncTime) {
+        this.syncTime = syncTime;
+    }
+
 }

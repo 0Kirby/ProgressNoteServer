@@ -1,63 +1,62 @@
 package cn.zerokirby.note;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
-import org.json.JSONArray;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Servlet implementation class SyncServlet_SC
  */
 @WebServlet("/SyncServlet_SC")
-public class SyncServlet_SC extends HttpServlet { //Í¬²½servlet£¨·şÎñÆ÷µ½¿Í»§¶Ë£©
-	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=utf-8");// ÉèÖÃ×ªÂë¸ñÊ½
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
+public class SyncServlet_SC extends HttpServlet { //åŒæ­¥servletï¼ˆæœåŠ¡å™¨åˆ°å®¢æˆ·ç«¯ï¼‰
+    private static final long serialVersionUID = 1L;
 
-		try (PrintWriter out = response.getWriter()) {
-			int userId = Integer.valueOf(request.getParameter("userId").trim());// »ñÈ¡ÓÃ»§ID
-			ArrayList<Note> noteList = new ArrayList<>();
-			noteList = UserDAO.fetchServer(userId);// ´Ó·şÎñÆ÷»ñÈ¡¶ÔÓ¦ÓÃ»§µÄ±Ê¼ÇÁĞ±í
-			Note note;
-			Iterator<Note> iterator = noteList.iterator();//NoteListµü´úÆ÷
-			
-			JSONArray jsonArray = new JSONArray();// ´´½¨JSONÊı×é
-			JSONObject jsonObject;// ´´½¨JSON¶ÔÏó
-			
-			while(iterator.hasNext())//±éÀú¼¯ºÏÖĞÃ¿Ò»¸öNote¶ÔÏó
-			{
-				note = iterator.next();
-				jsonObject = new JSONObject();//°ÑÃ¿¸öNote¶ÔÏóµÄÊôĞÔ¼ÓÈëJSON¶ÔÏó
-				
-				jsonObject.put("NoteId", note.getNoteId());
-				jsonObject.put("Time", note.getTime());
-				jsonObject.put("Title", note.getTitle());
-				jsonObject.put("Content", note.getContent());
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        response.setContentType("text/html;charset=utf-8");// è®¾ç½®è½¬ç æ ¼å¼
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
 
-				jsonArray.put(jsonObject);
-				
-			}
-			out.write(jsonArray.toString());// Êä³öJSON×Ö·û´®
-		}
-	}
+        try (PrintWriter out = response.getWriter()) {
+            int userId = Integer.valueOf(request.getParameter("userId").trim());// è·å–ç”¨æˆ·ID
+            ArrayList<Note> noteList = new ArrayList<>();
+            noteList = UserDAO.fetchServer(userId);// ä»æœåŠ¡å™¨è·å–å¯¹åº”ç”¨æˆ·çš„ç¬”è®°åˆ—è¡¨
+            Note note;
+            Iterator<Note> iterator = noteList.iterator();//NoteListè¿­ä»£å™¨
+
+            JSONArray jsonArray = new JSONArray();// åˆ›å»ºJSONæ•°ç»„
+            JSONObject jsonObject;// åˆ›å»ºJSONå¯¹è±¡
+
+            while (iterator.hasNext())//éå†é›†åˆä¸­æ¯ä¸€ä¸ªNoteå¯¹è±¡
+            {
+                note = iterator.next();
+                jsonObject = new JSONObject();//æŠŠæ¯ä¸ªNoteå¯¹è±¡çš„å±æ€§åŠ å…¥JSONå¯¹è±¡
+
+                jsonObject.put("NoteId", note.getNoteId());
+                jsonObject.put("Time", note.getTime());
+                jsonObject.put("Title", note.getTitle());
+                jsonObject.put("Content", note.getContent());
+
+                jsonArray.put(jsonObject);
+
+            }
+            out.write(jsonArray.toString());// è¾“å‡ºJSONå­—ç¬¦ä¸²
+        }
+    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

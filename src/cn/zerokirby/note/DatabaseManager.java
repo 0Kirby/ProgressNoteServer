@@ -1,66 +1,60 @@
 package cn.zerokirby.note;
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.*;
 
-public class DatabaseManager extends HttpServlet {//¸ºÔğÓëÊı¾İ¿âµÄÁ¬½Ó
-	private static final long serialVersionUID = 1L;
-	ServletConfig config;
-	//private static String db_url = "jdbc:mysql://ÇëÄúÔÚÕâÀïÊäÈë·şÎñÆ÷µÄµØÖ·:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
-	private static String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
-	private static String db_username = "user";
-	private static String db_password = "mypassword";
-	private static Connection connection;
-	private static boolean flag = false;
+public class DatabaseManager extends HttpServlet {//è´Ÿè´£ä¸æ•°æ®åº“çš„è¿æ¥
+    private static final long serialVersionUID = 1L;
+    //private static String db_url = "jdbc:mysql://è¯·æ‚¨åœ¨è¿™é‡Œè¾“å…¥æœåŠ¡å™¨çš„åœ°å€:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
+    private static String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
+    private static String db_username = "user";
+    private static String db_password = "mypassword";
+    private static Connection connection;
+    private static boolean flag = false;
+    ServletConfig config;
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {//³õÊ¼»¯
-		// TODO Auto-generated method stub
-		super.init(config);
-		this.config = config;
-	}
+    public static Connection getConnection() {//ä¸æ•°æ®åº“å»ºç«‹è¿æ¥
+        decrypt();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();//æ•°æ®åº“é©±åŠ¨ç±»
+            connection = DriverManager.getConnection(db_url, db_username, db_password);//ä¼ å‚å»ºç«‹è¿æ¥
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException
+                | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
+            ex.printStackTrace();
+        }
+        return connection;
+    }
 
-	public static void decrypt()
-	{
-		if (!flag) {
-			Decrypt decrypt = new Decrypt();
-			//db_url = decrypt.OperateURL(db_url);
-			db_username = decrypt.OperateUser(db_username);
-			db_password = decrypt.OperatePass(db_password);
-			flag = true;
-		}
-	}
-	
-	public static Connection getConnection() {//ÓëÊı¾İ¿â½¨Á¢Á¬½Ó
-		decrypt();
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();//Êı¾İ¿âÇı¶¯Àà
-			connection = DriverManager.getConnection(db_url, db_username, db_password);//´«²Î½¨Á¢Á¬½Ó
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException
-				| IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
-			ex.printStackTrace();
-		}
-		return connection;
-	}
+    public static void decrypt() {
+        if (!flag) {
+            Decrypt decrypt = new Decrypt();
+            //db_url = decrypt.OperateURL(db_url);
+            db_username = decrypt.OperateUser(db_username);
+            db_password = decrypt.OperatePass(db_password);
+            flag = true;
+        }
+    }
 
-	public static void closeAll(Connection connection, Statement statement, ResultSet resultSet) {//¹Ø±ÕÁ¬½Ó
-		try {
-			if (resultSet != null)
-				resultSet.close();
-			if (statement != null)
-				statement.close();
-			if (connection != null)
-				connection.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-	}
+    public static void closeAll(Connection connection, Statement statement, ResultSet resultSet) {//å…³é—­è¿æ¥
+        try {
+            if (resultSet != null)
+                resultSet.close();
+            if (statement != null)
+                statement.close();
+            if (connection != null)
+                connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {//åˆå§‹åŒ–
+        // TODO Auto-generated method stub
+        super.init(config);
+        this.config = config;
+    }
 }

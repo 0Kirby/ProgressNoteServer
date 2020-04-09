@@ -1,69 +1,60 @@
 package cn.zerokirby.note;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URLEncoder;
-
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Servlet implementation class DownloadServlet
  */
 @WebServlet("/DownloadServlet")
-public class DownloadServlet extends HttpServlet {// ÏÂÔØservlet
-	private static final long serialVersionUID = 1L;
+public class DownloadServlet extends HttpServlet {// ä¸‹è½½servlet
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public DownloadServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        // å¸¦UUIDçš„æ–‡ä»¶å
+        String fileUUIDName = request.getParameter("fileName");
+        String fileName = FileUtil.extractFileName(fileUUIDName);
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		// ´øUUIDµÄÎÄ¼þÃû
-		String fileUUIDName = request.getParameter("fileName");
-		String fileName = FileUtil.extractFileName(fileUUIDName);
-		System.out.println(fileName);
+        String fileRoot = "/usr/local/avatar";// æ–‡ä»¶å­˜å‚¨æ ¹ç›®å½•
 
-		String fileRoot = "/usr/local/avatar";// ÎÄ¼þ´æ´¢¸ùÄ¿Â¼
+        // æ ¹æ®æ–‡ä»¶åæ‰¾åˆ°å­˜å‚¨ç›®å½•
+        String fileDir = FileUtil.fileSave(fileUUIDName, fileRoot);
 
-		// ¸ù¾ÝÎÄ¼þÃûÕÒµ½´æ´¢Ä¿Â¼
-		String fileDir = FileUtil.fileSave(fileUUIDName, fileRoot);
+        String targetFileUrl = fileRoot + fileDir + File.separator + fileUUIDName;
 
-		String targetFileUrl = fileRoot + fileDir + File.separator + fileUUIDName;
-		System.out.println(targetFileUrl);
-		File file = new File(targetFileUrl);
+        File file = new File(targetFileUrl);
 
-		if (!file.exists()) {
-			System.out.println("Ä¿±êÎÄ¼þ²»´æÔÚ");
-			return;
-		}
-		response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        if (!file.exists()) {
+            System.out.println("ç›®æ ‡æ–‡ä»¶ä¸å­˜åœ¨");
+            return;
+        }
+        response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
 
-		FileInputStream inputStream = new FileInputStream(file);
-		ServletOutputStream servletOutputStream = response.getOutputStream();
-		byte[] buffer = new byte[1024];
-		int len;
-		while ((len = inputStream.read(buffer)) > 0) {
-			servletOutputStream.write(buffer, 0, len);
-		}
-		inputStream.close();
-		servletOutputStream.close();
-	}
+        FileInputStream inputStream = new FileInputStream(file);
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = inputStream.read(buffer)) > 0) {
+            servletOutputStream.write(buffer, 0, len);
+        }
+        inputStream.close();
+        servletOutputStream.close();
+    }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

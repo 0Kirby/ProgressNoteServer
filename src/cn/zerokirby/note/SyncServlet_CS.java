@@ -1,45 +1,44 @@
 package cn.zerokirby.note;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.json.JSONArray;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONArray;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet implementation class SyncServlet_CS
  */
 @WebServlet("/SyncServlet_CS")
-public class SyncServlet_CS extends HttpServlet { //Í¬²½servlet£¨¿Í»§¶Ëµ½·şÎñÆ÷£©
-	private static final long serialVersionUID = 1L;
-       
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.setContentType("text/html;charset=utf-8");// ÉèÖÃ×ªÂë¸ñÊ½
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		
-		try (PrintWriter out = response.getWriter()) {
-			int userId = Integer.valueOf(request.getParameter("userId").trim());// »ñÈ¡ÓÃ»§ID
-			String jsonString = request.getParameter("json").trim();// »ñÈ¡JSONÊı×éµÄ×Ö·û´®
+public class SyncServlet_CS extends HttpServlet { //åŒæ­¥servletï¼ˆå®¢æˆ·ç«¯åˆ°æœåŠ¡å™¨ï¼‰
+    private static final long serialVersionUID = 1L;
 
-			JSONArray jsonArray = new JSONArray(jsonString);//¸ù¾İjson×Ö·û´®´´½¨jsonÊı×é
-			
-			UserDAO.pushServer(userId,jsonArray); //ÍÆËÍµ½·şÎñÆ÷
-			
-			out.write("Í¬²½³É¹¦£¡");
-		}
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        response.setContentType("text/html;charset=utf-8");// è®¾ç½®è½¬ç æ ¼å¼
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
 
-	/**
+        try (PrintWriter out = response.getWriter()) {
+            int userId = Integer.valueOf(request.getParameter("userId").trim());// è·å–ç”¨æˆ·ID
+            String jsonString = request.getParameter("json").trim();// è·å–JSONæ•°ç»„çš„å­—ç¬¦ä¸²
+
+            JSONArray jsonArray = new JSONArray(jsonString);//æ ¹æ®jsonå­—ç¬¦ä¸²åˆ›å»ºjsonæ•°ç»„
+
+            UserDAO.pushServer(userId, jsonArray); //æ¨é€åˆ°æœåŠ¡å™¨
+
+            out.write("åŒæ­¥æˆåŠŸï¼");
+        }
+    }
+
+    /**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
