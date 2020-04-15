@@ -10,7 +10,7 @@ import java.sql.*;
 public class DatabaseManager extends HttpServlet {//负责与数据库的连接
     private static final long serialVersionUID = 1L;
     //private static String db_url = "jdbc:mysql://请您在这里输入服务器的地址:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
-    private static String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
+    private static final String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
     private static String db_username = "user";
     private static String db_password = "mypassword";
     private static Connection connection;
@@ -54,7 +54,6 @@ public class DatabaseManager extends HttpServlet {//负责与数据库的连接
 
     @Override
     public void init(ServletConfig config) throws ServletException {//初始化
-        // TODO Auto-generated method stub
         super.init(config);
         this.config = config;
     }

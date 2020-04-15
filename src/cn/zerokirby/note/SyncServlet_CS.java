@@ -21,7 +21,6 @@ public class SyncServlet_CS extends HttpServlet { //同步servlet（客户端到
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         response.setContentType("text/html;charset=utf-8");// 设置转码格式
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
@@ -42,7 +41,6 @@ public class SyncServlet_CS extends HttpServlet { //同步servlet（客户端到
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

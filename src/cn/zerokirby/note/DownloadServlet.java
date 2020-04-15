@@ -26,7 +26,6 @@ public class DownloadServlet extends HttpServlet {// 下载servlet
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
         // 带UUID的文件名
         String fileUUIDName = request.getParameter("fileName");
         String fileName = FileUtil.extractFileName(fileUUIDName);
@@ -63,7 +62,6 @@ public class DownloadServlet extends HttpServlet {// 下载servlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

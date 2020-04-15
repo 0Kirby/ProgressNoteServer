@@ -26,7 +26,6 @@ public class DownloadAvatarServlet extends HttpServlet { // 下载头像servlet
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
         final String fileRoot = "/usr/local/avatar";// 文件存储根目录
 
         int userId = Integer.valueOf(request.getParameter("userId").trim());// 获取用户ID
@@ -59,7 +58,6 @@ public class DownloadAvatarServlet extends HttpServlet { // 下载头像servlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

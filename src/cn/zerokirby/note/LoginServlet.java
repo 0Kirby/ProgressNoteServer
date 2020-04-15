@@ -24,7 +24,6 @@ public class LoginServlet extends HttpServlet {// 登录servlet
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
         response.setContentType("text/html;charset=utf-8");// 设置转码格式
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
@@ -59,7 +58,6 @@ public class LoginServlet extends HttpServlet {// 登录servlet
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
         doGet(request, response);
     }
 
