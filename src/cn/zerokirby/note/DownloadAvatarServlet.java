@@ -1,6 +1,5 @@
 package cn.zerokirby.note;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,10 +24,10 @@ public class DownloadAvatarServlet extends HttpServlet { // 下载头像servlet
      * response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         final String fileRoot = "/usr/local/avatar";// 文件存储根目录
 
-        int userId = Integer.valueOf(request.getParameter("userId").trim());// 获取用户ID
+        int userId = Integer.parseInt(request.getParameter("userId").trim());// 获取用户ID
 
         final String avatarPath = UserDAO.queryAvatarPath(userId);
 
@@ -49,16 +48,16 @@ public class DownloadAvatarServlet extends HttpServlet { // 下载头像servlet
                 inputStream.close();
                 servletOutputStream.close();
             }
-		}
-	}
+        }
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        doGet(request, response);
+    }
 
 }

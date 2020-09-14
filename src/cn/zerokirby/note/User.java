@@ -2,8 +2,8 @@ package cn.zerokirby.note;
 
 public class User {
 
-    boolean isValid;// 账号是否有效
-    private int id;// id
+    private boolean isValid;// 账号是否有效
+    private int userId;// 用户id
     private String username;// 用户名
     private String password;// 密码
     private String language;// 语言
@@ -12,18 +12,19 @@ public class User {
     private String model;// 型号
     private String brand;// 品牌
     private long registerTime; // 注册时间
-    private long syncTime; // 同步时间
+    private long lastUse; // 上次使用时间
+    private long lastSync; // 上次同步时间
 
     public User() {
 
     }
 
-    public int getId() {
-        return id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -98,12 +99,20 @@ public class User {
         this.registerTime = registerTime;
     }
 
-    public long getSyncTime() {
-        return syncTime;
+    public long getLastUse() {
+        return lastUse;
     }
 
-    public void setSyncTime(long syncTime) {
-        this.syncTime = syncTime;
+    public void setLastUse(long lastUse) {
+        this.lastUse = lastUse;
+    }
+
+    public long getLastSync() {
+        return lastSync;
+    }
+
+    public void setLastSync(long lastSync) {
+        this.lastSync = lastSync;
     }
 
 }

@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 public class UserDAO {// 用户数据处理内部逻辑
 
-    public static User queryUser(String username) {// 查询用户
+    public static User queryUser(String username, String language, String version, String display,
+                                 String model, String brand) {// 查询用户
         Connection connection = DatabaseManager.getConnection();// 和数据库建立连接
         PreparedStatement preparedStatement = null;
         PreparedStatement preparedStatement2 = null;
@@ -21,20 +22,25 @@ public class UserDAO {// 用户数据处理内部逻辑
             resultSet = preparedStatement.executeQuery();// 执行查询
             User user = new User();
             if (resultSet.next()) {// 根据数据库的内容给User对象赋值
-                user.setId(resultSet.getInt("id"));
+                user.setUserId(resultSet.getInt("id"));
                 user.setUsername(resultSet.getString("username"));
                 user.setPassword(resultSet.getString("password"));
                 user.setValid(resultSet.getBoolean("isValid"));
                 user.setRegisterTime(resultSet.getTimestamp("registerTime").getTime());
                 if (resultSet.getTimestamp("lastSync") != null)// 已经进行过同步
-                    user.setSyncTime(resultSet.getTimestamp("lastSync").getTime());
-                if (resultSet.getBoolean("isValid") == true)// 如果账号有效，更新数据库中的lastUse字段
+                    user.setLastSync(resultSet.getTimestamp("lastSync").getTime());
+                if (resultSet.getBoolean("isValid"))// 如果账号有效，更新数据库中的lastUse字段
                 {
                     sqlStatement = new StringBuilder();
-                    sqlStatement.append("update progress_note.user SET lastUse=CURRENT_TIMESTAMP(3) where id="
-                            + resultSet.getInt("id"));// SQL语句
+                    sqlStatement.append("update progress_note.user SET language=?,version=?,display=?,model=?,brand=?,lastUse=CURRENT_TIMESTAMP(3) where id=?");// SQL语句
                     try {
                         preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
+                        preparedStatement2.setString(1, language);// 将第一个?替换为语言
+                        preparedStatement2.setString(2, version);// 将第二个?替换为版本
+                        preparedStatement2.setString(3, display);// 将第三个?替换为显示
+                        preparedStatement2.setString(4, model);// 将第四个?替换为型号
+                        preparedStatement2.setString(5, brand);// 将第五个?替换为品牌
+                        preparedStatement2.setInt(6, resultSet.getInt("id"));// 将第六个?替换成ID
                         preparedStatement2.executeUpdate();// 执行更新
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -70,8 +76,8 @@ public class UserDAO {// 用户数据处理内部逻辑
             preparedStatement.setString(6, model);// 将第六个?替换为型号
             preparedStatement.setString(7, brand);// 将第七个?替换为品牌
             preparedStatement.executeUpdate();// 执行更新
-            User user = queryUser(username);
-            return user.getId();
+            User user = queryUser(username, "", "", "", "", "");
+            return user.getUserId();
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {

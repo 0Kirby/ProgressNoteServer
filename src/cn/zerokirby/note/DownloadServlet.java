@@ -1,6 +1,5 @@
 package cn.zerokirby.note;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,7 +24,7 @@ public class DownloadServlet extends HttpServlet {// 下载servlet
      * response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         // 带UUID的文件名
         String fileUUIDName = request.getParameter("fileName");
         String fileName = FileUtil.extractFileName(fileUUIDName);
@@ -56,13 +55,13 @@ public class DownloadServlet extends HttpServlet {// 下载servlet
         servletOutputStream.close();
     }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     * response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        doGet(request, response);
+    }
 
 }

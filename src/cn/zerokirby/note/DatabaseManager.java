@@ -12,7 +12,7 @@ public class DatabaseManager extends HttpServlet {//负责与数据库的连接
     //private static String db_url = "jdbc:mysql://请您在这里输入服务器的地址:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
     private static final String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
     private static String db_username = "user";
-    private static String db_password = "mypassword";
+    private static String db_password = "myPassword";
     private static Connection connection;
     private static boolean flag = false;
     ServletConfig config;

@@ -32,7 +32,7 @@ public class RegisterServlet extends HttpServlet {// 注册servlet
      * response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         response.setContentType("text/html;charset=utf-8");// 设置转码格式
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
@@ -60,7 +60,7 @@ public class RegisterServlet extends HttpServlet {// 注册servlet
     }
 
     private Boolean isExist(String username) {// 查询用户是否存在
-        user = UserDAO.queryUser(username);
+        user = UserDAO.queryUser(username, "", "", "", "", "");
         return user != null;
     }
 }
