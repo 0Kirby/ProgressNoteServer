@@ -10,6 +10,7 @@ import jakarta.servlet.http.Part;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Collection;
 
 @MultipartConfig
@@ -19,6 +20,7 @@ public class UploadAvatarServlet extends HttpServlet { // 上传头像servlet
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -27,7 +29,7 @@ public class UploadAvatarServlet extends HttpServlet { // 上传头像servlet
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 
-        int userId = Integer.valueOf(request.getParameter("userId").trim());// 获取用户ID
+        int userId = Integer.parseInt(request.getParameter("userId").trim());// 获取用户ID
 
         String savePathRoot = "/usr/local/avatar";// 保存路径
 

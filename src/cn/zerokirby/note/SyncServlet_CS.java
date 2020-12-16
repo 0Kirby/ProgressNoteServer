@@ -8,12 +8,14 @@ import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 
 /**
  * Servlet implementation class SyncServlet_CS
  */
 @WebServlet("/SyncServlet_CS")
 public class SyncServlet_CS extends HttpServlet { //同步servlet（客户端到服务器）
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

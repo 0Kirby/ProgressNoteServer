@@ -76,7 +76,7 @@ public class UserDAO {// 用户数据处理内部逻辑
             preparedStatement.setString(6, model);// 将第六个?替换为型号
             preparedStatement.setString(7, brand);// 将第七个?替换为品牌
             preparedStatement.executeUpdate();// 执行更新
-            User user = queryUser(username, "", "", "", "", "");
+            User user = queryUser(username, language, version, display, model, brand);
             return user.getUserId();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -107,7 +107,7 @@ public class UserDAO {// 用户数据处理内部逻辑
                 noteList.add(note);
             }
             sqlStatement = new StringBuilder();// 更新数据库中的lastSync字段
-            sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=" + userId);// SQL语句
+            sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=").append(userId);// SQL语句
             try {
                 preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
                 preparedStatement2.executeUpdate();// 执行更新
@@ -169,7 +169,7 @@ public class UserDAO {// 用户数据处理内部逻辑
         }
         DatabaseManager.closeAll(connection, preparedStatement, null);// 关闭连接
         sqlStatement = new StringBuilder();// 更新数据库中的lastSync字段
-        sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=" + userId);// SQL语句
+        sqlStatement.append("update progress_note.user SET lastSync=CURRENT_TIMESTAMP(3) where id=").append(userId);// SQL语句
         try {
             preparedStatement2 = connection.prepareStatement(sqlStatement.toString());
             preparedStatement2.executeUpdate();// 执行更新

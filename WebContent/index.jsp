@@ -15,7 +15,8 @@
     <p>用户ID：<input name="userId" type="text" onkeyup="value=value.replace(/[^(\d)]/g,'')">
     <p><input type="hidden" name="language" value="aaa">
         <input type="hidden" name="version" value="aaa">
-        <input type="hidden" name="display" value="aaa">
+        <input type="hidden" name="display"
+               value="sdk_gphone_x86_arm-userdebug%2011%20RSR1.201013.001%206903271%20dev-keys">
         <input type="hidden" name="model" value="aaa">
         <input type="hidden" name="brand" value="aaa">
     <p>

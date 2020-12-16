@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serial;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
  */
 @WebServlet("/DownloadAvatarServlet")
 public class DownloadAvatarServlet extends HttpServlet { // 下载头像servlet
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

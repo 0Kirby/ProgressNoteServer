@@ -8,12 +8,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 
 /**
  * Servlet implementation class LoginServlet
  */
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {// 登录servlet
+    @Serial
     private static final long serialVersionUID = 1L;
     static User user;
 
@@ -39,17 +41,27 @@ public class LoginServlet extends HttpServlet {// 登录servlet
 
             JSONObject jsonObject = new JSONObject();// 创建JSON对象
 
-            if (verifyResult == 1) {
-                jsonObject.put("Result", "登录成功！");
-                jsonObject.put("Id", user.getUserId());
-                jsonObject.put("RegisterTime", user.getRegisterTime());
-                jsonObject.put("SyncTime", user.getLastSync());
-            } else if (verifyResult == 0)
-                jsonObject.put("Result", "用户名或密码错误！");
-            else if (verifyResult == -1)
-                jsonObject.put("Result", "该用户已被停用！");
-            else
-                jsonObject.put("Result", "用户不存在！");
+            switch (verifyResult) {
+                case 1 -> {
+                    jsonObject.put("Result", "登录成功！");
+                    jsonObject.put("Status", 1);
+                    jsonObject.put("Id", user.getUserId());
+                    jsonObject.put("RegisterTime", user.getRegisterTime());
+                    jsonObject.put("SyncTime", user.getLastSync());
+                }
+                case 0 -> {
+                    jsonObject.put("Result", "用户名或密码错误！");
+                    jsonObject.put("Status", 0);
+                }
+                case -1 -> {
+                    jsonObject.put("Result", "该用户已被停用！");
+                    jsonObject.put("Status", -1);
+                }
+                case -2 -> {
+                    jsonObject.put("Result", "用户不存在！");
+                    jsonObject.put("Status", -2);
+                }
+            }
 
             out.write(jsonObject.toString());// 输出JSON字符串
         }

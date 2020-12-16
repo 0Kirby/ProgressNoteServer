@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -18,6 +19,7 @@ import java.util.Iterator;
  */
 @WebServlet("/SyncServlet_SC")
 public class SyncServlet_SC extends HttpServlet { //同步servlet（服务器到客户端）
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -31,7 +33,7 @@ public class SyncServlet_SC extends HttpServlet { //同步servlet（服务器到
         response.setCharacterEncoding("utf-8");
 
         try (PrintWriter out = response.getWriter()) {
-            int userId = Integer.valueOf(request.getParameter("userId").trim());// 获取用户ID
+            int userId = Integer.parseInt(request.getParameter("userId").trim());// 获取用户ID
             ArrayList<Note> noteList = new ArrayList<>();
             noteList = UserDAO.fetchServer(userId);// 从服务器获取对应用户的笔记列表
             Note note;

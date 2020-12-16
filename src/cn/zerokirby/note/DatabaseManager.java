@@ -4,10 +4,12 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 
+import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 
 public class DatabaseManager extends HttpServlet {//负责与数据库的连接
+    @Serial
     private static final long serialVersionUID = 1L;
     //private static String db_url = "jdbc:mysql://请您在这里输入服务器的地址:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
     private static final String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";

@@ -9,12 +9,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serial;
 
 /**
  * Servlet implementation class RegisterServlet
  */
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {// 注册servlet
+    @Serial
     private static final long serialVersionUID = 1L;
     static User user;
 
@@ -48,19 +50,22 @@ public class RegisterServlet extends HttpServlet {// 注册servlet
 
             JSONObject jsonObject = new JSONObject();// 创建JSON对象
 
-            if (isExist(username))
+            if (isExist(username, language, version, display, model, brand)) {
                 jsonObject.put("Result", "用户已存在！");
-            else {
+                jsonObject.put("Status", 0);
+            } else {
                 int id = UserDAO.registerUser(username, password, language, version, display, model, brand);
                 jsonObject.put("Result", "注册成功！");
+                jsonObject.put("Status", 1);
                 jsonObject.put("Id", id);
             }
             out.write(jsonObject.toString());// 输出JSON字符串
         }
     }
 
-    private Boolean isExist(String username) {// 查询用户是否存在
-        user = UserDAO.queryUser(username, "", "", "", "", "");
+    private Boolean isExist(String username, String language, String version, String display,
+                            String model, String brand) {// 查询用户是否存在
+        user = UserDAO.queryUser(username, language, version, display, model, brand);
         return user != null;
     }
 }
