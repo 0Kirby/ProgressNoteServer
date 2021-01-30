@@ -11,7 +11,7 @@ import java.sql.*;
 public class DatabaseManager extends HttpServlet {//负责与数据库的连接
     @Serial
     private static final long serialVersionUID = 1L;
-    //private static String db_url = "jdbc:mysql://请您在这里输入服务器的地址:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
+    //private static final String db_url = "jdbc:mysql://zerokirby.cn:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
     private static final String db_url = "jdbc:mysql://localhost:3306/progress_note?autoReconnect=true&serverTimezone=Asia/Shanghai";
     private static String db_username = "user";
     private static String db_password = "myPassword";
@@ -20,7 +20,7 @@ public class DatabaseManager extends HttpServlet {//负责与数据库的连接
     ServletConfig config;
 
     public static Connection getConnection() {//与数据库建立连接
-        decrypt();
+        //decrypt();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();//数据库驱动类
             connection = DriverManager.getConnection(db_url, db_username, db_password);//传参建立连接
@@ -34,7 +34,6 @@ public class DatabaseManager extends HttpServlet {//负责与数据库的连接
     public static void decrypt() {
         if (!flag) {
             Decrypt decrypt = new Decrypt();
-            //db_url = decrypt.OperateURL(db_url);
             db_username = decrypt.OperateUser(db_username);
             db_password = decrypt.OperatePass(db_password);
             flag = true;
