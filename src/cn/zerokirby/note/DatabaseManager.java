@@ -20,7 +20,7 @@ public class DatabaseManager extends HttpServlet {//负责与数据库的连接
     ServletConfig config;
 
     public static Connection getConnection() {//与数据库建立连接
-        //decrypt();
+        decrypt();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();//数据库驱动类
             connection = DriverManager.getConnection(db_url, db_username, db_password);//传参建立连接
