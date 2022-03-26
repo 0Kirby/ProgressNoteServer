@@ -26,6 +26,7 @@
         <input type="submit" value="注册" onClick="register()">&nbsp;&nbsp;
         <input type="submit" value="查询" onClick="query()">&nbsp;&nbsp;
         <input type="submit" value="下载" onClick="download()">&nbsp;&nbsp;
+        <input type="submit" value="注销" onClick="invalidate()">&nbsp;&nbsp;
     </p>
 </form>
 <form action="UploadAvatarServlet" enctype="multipart/form-data" method="post">
@@ -55,6 +56,11 @@
 
     function download() {
         user.action = 'DownloadAvatarServlet';
+        user.submit()
+    }
+
+    function invalidate() {
+        user.action = 'InvalidateUserServlet';
         user.submit()
     }
 </script>
