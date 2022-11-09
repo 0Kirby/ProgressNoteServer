@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {// 注册servlet
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        response.setContentType("text/html;charset=utf-8");// 设置转码格式
+        response.setContentType("application/json;charset=utf-8");// 设置转码格式
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 

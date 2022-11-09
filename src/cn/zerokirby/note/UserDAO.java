@@ -8,8 +8,7 @@ import java.util.ArrayList;
 
 public class UserDAO {// 用户数据处理内部逻辑
 
-    public static User queryUser(String username, String language, String version, String display,
-                                 String model, String brand) {// 查询用户
+    public static User queryUser(String username, String language, String version, String display, String model, String brand) {// 查询用户
         Connection connection = DatabaseManager.getConnection();// 和数据库建立连接
         PreparedStatement preparedStatement = null;
         PreparedStatement preparedStatement2 = null;
@@ -49,8 +48,7 @@ public class UserDAO {// 用户数据处理内部逻辑
                     }
                 }
                 return user;
-            } else
-                return null;
+            } else return null;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
@@ -59,13 +57,11 @@ public class UserDAO {// 用户数据处理内部逻辑
         }
     }
 
-    public static int registerUser(String username, String password, String language, String version, String display,
-                                   String model, String brand) {// 注册用户
+    public static int registerUser(String username, String password, String language, String version, String display, String model, String brand) {// 注册用户
         Connection connection = DatabaseManager.getConnection();// 和数据库建立连接
         PreparedStatement preparedStatement = null;
         StringBuilder sqlStatement = new StringBuilder();
-        sqlStatement.append(
-                "insert into progress_note.user (username,password,language,version,display,model,brand,isValid) values (?,?,?,?,?,?,?,1)");// SQL语句
+        sqlStatement.append("insert into progress_note.user (username,password,language,version,display,model,brand,isValid) values (?,?,?,?,?,?,?,1)");// SQL语句
         try {
             preparedStatement = connection.prepareStatement(sqlStatement.toString());
             preparedStatement.setString(1, username);// 将第一个?替换为用户名
@@ -210,8 +206,7 @@ public class UserDAO {// 用户数据处理内部逻辑
             preparedStatement.setInt(1, userId);// 将第一个?替换为用户ID
             resultSet = preparedStatement.executeQuery();// 执行更新
             if (resultSet.next())
-                if (resultSet.getString("avatarPath") != null)
-                    path = resultSet.getString("avatarPath");
+                if (resultSet.getString("avatarPath") != null) path = resultSet.getString("avatarPath");
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {

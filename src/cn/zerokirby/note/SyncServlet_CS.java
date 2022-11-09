@@ -22,7 +22,7 @@ public class SyncServlet_CS extends HttpServlet { //同步servlet（客户端到
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("text/html;charset=utf-8");// 设置转码格式
+        response.setContentType("application/json;charset=utf-8");// 设置转码格式
         request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
 
